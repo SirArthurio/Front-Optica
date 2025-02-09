@@ -1,0 +1,7 @@
+{
+  "name": "INVR",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
