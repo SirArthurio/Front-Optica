@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-menu-button id="m1"></ion-menu-button>
+      <ion-title>Examenes</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid class="container">
+    <section class="grid grid-cols-1 p-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="col text-center">
+        <button class="border rounded-md w-full m-2  p-2 bg-[#008b8b]" [routerLink]="['/queratometria']"  >Examen Queratometria</button>
+      </div>
+      <div class="col text-center">
+        <button class="border rounded-md w-full m-2 p-2 bg-[#008b8b]"[routerLink]="['/refraccion']"  >Examen Consulta </button>
+      </div>
+    </section>
+   
+    
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,222 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-menu-button menu="m1"> </ion-menu-button>
+      <ion-title>Refraccion</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <form [formGroup]="ExamenRefraccion">
+      <div>
+        <section class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
+          <label for="">Surcurzal</label>
+          <select
+            class="form-control m-2 w-full p-2 m-2 text-black rounded-md"
+            formControlName="surcurzal"
+          >
+            <option *ngFor="let item of sucursales" [value]="[item.nombre]">
+              {{item.nombre}}
+            </option>
+          </select>
+        </section>
+      </div>
+      <div
+        class="border rounded-md p-2 m-2 bg-[#008b8b] text-white grid grid-cols-1">
+        <label for=""> Ojo Derecho</label>
+        <section class="grid grid-cols-1 md:grid-cols-3">
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Esfera</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="esferaOjoDerecho"
+            >
+              <option *ngFor="let item of esfera" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">cilindro:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="cilindroOjoDerecho"
+            >
+              <option *ngFor="let item of cilindro" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Eje:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="ejeOjoDerecho"
+            >
+              <option *ngFor="let item of eje" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Add:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="adicionOjoDerecho"
+            >
+              <option *ngFor="let item of adicion" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Dnp:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="dnpOjoDerecho"
+            >
+              <option *ngFor="let item of dnp" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">AgudezaSc:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="agudezaScOjoDerecho"
+            >
+              <option *ngFor="let item of agudezaSc" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">AgudezaCc:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="agudezaCcOjoDerecho"
+            >
+              <option *ngFor="let item of agudezaCc" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+        </section>
+      </div>
+      <div
+        class="border rounded-md p-2 m-2 bg-[#008b8b] text-white grid grid-cols-1">
+        <label for=""> Ojo Izquierdo</label>
+        <section class="grid grid-cols-1 md:grid-cols-3">
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Esfera</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="esferaOjoIzquierdo"
+            >
+              <option *ngFor="let item of esfera" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">cilindro:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="cilindroOjoIzquierdo"
+            >
+              <option *ngFor="let item of cilindro" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Eje:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="ejeOjoIzquierdo"
+            >
+              <option *ngFor="let item of eje" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Add:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="adicionOjoDerecho"
+            >
+              <option *ngFor="let item of adicion" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Dnp:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="dnpOjoDerecho"
+            >
+              <option *ngFor="let item of dnp" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">AgudezaSc:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="agudezaScOjoDerecho"
+            >
+              <option *ngFor="let item of agudezaSc" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">AgudezaCc:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="agudezaCcOjoDerecho"
+            >
+              <option *ngFor="let item of agudezaCc" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+        </section>
+      </div>
+     
+      <div class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
+        <label for="">Comentario</label>
+        <ion-input
+          class="form-input rounded-md m-2 px-2 bg-white text-black"
+          formControlName="comentario"
+        ></ion-input>
+      </div>
+
+      <ion-button class="place-self-end" id="present-alert">Guardar</ion-button>
+      <ion-alert
+        trigger="present-alert"
+        header="Advertencia!"
+        message="¿Estas seguro de guardar los datos?"
+        [buttons]="alertButtons"
+      ></ion-alert>
+    </form>
+  </ion-grid>
+</ion-content>

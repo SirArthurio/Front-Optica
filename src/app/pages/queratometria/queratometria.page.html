@@ -1,0 +1,125 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-menu-button menu="m1"> </ion-menu-button>
+      <ion-title>Queratometria</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <form [formGroup]="ExamenQueratometria">
+      <div>
+        <section class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
+          <label for="">Surcurzal</label>
+          <select
+            class="form-control m-2 w-full p-2 m-2 text-black rounded-md"
+            formControlName="surcurzal"
+          >
+            <option *ngFor="let item of surcurzal" [value]="[item.nombre]">
+              {{item.nombre}}
+            </option>
+          </select>
+        </section>
+      </div>
+      <div
+        class="border rounded-md p-2 m-2 bg-[#008b8b] text-white grid grid-cols-1"
+      >
+        <label for=""> Ojo Derecho</label>
+        <section class="grid grid-cols-1 md:grid-cols-3">
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Eje Ojo:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="ejeOjoDerecho"
+            >
+              <option *ngFor="let item of ejeOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Vertical:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="verticalOjoDerecho"
+            >
+              <option *ngFor="let item of verticalOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Horizontal:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="horizontalOjoDerecho"
+            >
+              <option *ngFor="let item of horizontalOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+        </section>
+      </div>
+      <div class="border rounded-md p-2 m-2 bg-[#008b8b] text-white">
+        <label class="text-start"> Ojo Izquierdo</label>
+        <section class="grid grid-cols-1 md:grid-cols-3">
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Eje Ojo:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="ejeOjoIzquierdo"
+            >
+              <option *ngFor="let item of ejeOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="m1">Vertical:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="verticalOjoIzquierdo"
+            >
+              <option *ngFor="let item of verticalOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+
+          <section class="grid grid-cols-1 m-1 p-1 text-center">
+            <label class="">Horizontal:</label>
+            <select
+              class="form-control text-black rounded-md"
+              formControlName="horizontalOjoIzquierdo"
+            >
+              <option *ngFor="let item of horizontalOjo" [value]="item.valor">
+                {{item.valor}}
+              </option>
+            </select>
+          </section>
+        </section>
+      </div>
+      <div class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
+        <label for="">Comentario</label>
+        <ion-input
+          class="form-input rounded-md m-2 px-2 bg-white text-black"
+          formControlName="comentario"
+        ></ion-input>
+      </div>
+
+      <ion-button class="place-self-end" id="present-alert">Guardar</ion-button>
+      <ion-alert
+        trigger="present-alert"
+        header="Advertencia!"
+        message="¿Estas seguro de guardar los datos?"
+        [buttons]="alertButtons"
+      ></ion-alert>
+    </form>
+  </ion-grid>
+</ion-content>

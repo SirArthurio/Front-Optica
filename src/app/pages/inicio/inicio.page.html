@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button id="m1"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" scroll="false">
+  <swiper-container
+    #swiper
+    slides-per-view="1"
+    loop="true"
+    autoplay-delay="3000"
+    autoplay-disable-on-interaction="false"
+    pagination-clickable="true"
+    pagination-dynamic-bullets="true"
+    centered-slides="true"
+    class="p-4"
+  >
+    <swiper-slide *ngFor="let item of SlideImg" class="justify-items-center">
+      <img
+        [src]="item.img"
+        class="sm:w-full md:w-1/2 h-[300px] object-cover rounded-lg"
+      />
+    </swiper-slide>
+  </swiper-container>
+
+  <section
+    class="border rounded-xl text-center text-3xl text-white bg-[#008b8b] p-4 mt-4"
+  >
+    <h1 class="text-center">¡Bienvenidos!</h1>
+  </section>
+
+  <section class="p-4 m-4 text-black text-center">
+    <h2 class="text-2xl">Nuestros Servicios!</h2>
+    <p>Contamos con una gran variedad de servicios para atenderte! :D</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 m-2 p-2  ">
+      <ion-card *ngFor="let item of servicios" class="transition-all duration-300 ease-in-out hover:text-teal-800 hover:-translate-y-1 hover:shadow-lg group">
+        <a [routerLink]="[item.url]">
+          <img alt="Silhouette of mountains" [src]="item.imagen" />
+          <ion-card-header>
+            <ion-card-title>{{item.titulo}}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content> {{item.descripcion}} </ion-card-content>
+        </a>
+      </ion-card>
+    </div>
+  </section>
+</ion-content>
