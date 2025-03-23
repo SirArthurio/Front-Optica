@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+  <div class="table-container">
+    <div class="header-container">
+      <h2 class="table-title">Resultados de Refracción</h2>
+      <ion-searchbar placeholder="Buscar por cédula" animated class="custom-searchbar"></ion-searchbar>
+    </div>
+    
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th *ngFor="let column of columns" class="column-header" [ngClass]="{'eye-column': column.key.includes('ojo')}">
+              <div class="header-content">
+                <span>{{ column.header }}</span>
+                <ion-icon name="arrow-down" class="sort-icon"></ion-icon>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data$ | async; let i = index" 
+              class="data-row" 
+              [ngClass]="{'even-row': i % 2 === 0}"
+              [class.animate-in]="true"
+              [style.animation-delay]="i * 0.05 + 's'">
+            <td *ngFor="let column of columns" 
+                class="data-cell" 
+                [ngClass]="{'eye-data': column.key.includes('ojo')}">
+              <ng-container *ngIf="column.key.includes('ojo'); else regularCell">
+                <div class="eye-info">
+                  <ion-icon name="eye-outline" class="eye-icon"></ion-icon>
+                  <div class="eye-details">{{ getValue(row, column.key) }}</div>
+                </div>
+              </ng-container>
+              <ng-template #regularCell>
+                {{ getValue(row, column.key) }}
+              </ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!(data$ | async)?.length" class="empty-row">
+            <td [attr.colspan]="columns.length" class="empty-message">
+              <div class="empty-state">
+                <ion-icon name="document-text-outline" class="empty-icon"></ion-icon>
+                <p>No hay resultados disponibles</p>
+                <ion-button fill="outline" size="small">
+                  <ion-icon name="refresh-outline" slot="start"></ion-icon>
+                  Actualizar
+                </ion-button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button color="primary">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>
+

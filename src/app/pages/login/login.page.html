@@ -1,0 +1,62 @@
+<ion-content [fullscreen]="true">
+  <div class="loginPage flex">
+    <div class="container flex">
+      <div class="videoDiv">
+        <video src="../../../assets/video/opto.mp4" autoplay muted loop></video>
+
+        <div class="textDiv">
+          <h1 class="title">INVR</h1>
+        </div>
+
+        <div class="footerDiv flex">
+          <span class="text"> No tienes una cuenta?, Unetenos </span>
+
+          <ion-button [routerLink]="['register']" class="btn">
+            Crear Cuenta
+          </ion-button>
+        </div>
+      </div>
+
+      <div class="formDiv flex">
+        <div class="headerDiv">
+          <img
+            src="../../../assets/icon/logoOptica.png"
+            alt="Logo img"
+          />
+        </div>
+
+        <form action="" class="form grid" [formGroup]="FormLogin" (ngSubmit)="onsubmit()">
+          <div class="inputDiv">
+            <label htmlFor="username"> Usuario </label>
+            <div class="input flex">
+              <input
+                placeholder="Ingrese su Usuario"
+                type="text"
+                formControlName="username"
+              />
+            </div>
+          </div>
+
+          <div class="inputDiv">
+            <label htmlFor="password"> Contraseña </label>
+            <div class="input flex">
+              <input
+                placeholder="Ingrese su contraseña"
+                type="password"
+                formControlName="password"
+              />
+            </div>
+          </div>
+
+          <ion-button  type="submit" class="btn flex">
+            <span> Login </span>
+          </ion-button>
+
+          <span class="footerDiv flex">
+            Olvidaste tu contraseña? <a href="">Click aqui!</a>
+          </span>
+        </form>
+      </div>
+    </div>
+  </div>
+</ion-content>

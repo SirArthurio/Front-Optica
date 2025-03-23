@@ -1,0 +1,114 @@
+<ion-content class="voice-content">
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="title">Asistente de Voz</h1>
+      <p class="subtitle">Programa tu cita mediante comandos de voz</p>
+    </div>
+
+    <!-- Voice Recognition Card -->
+    <div class="voice-card" [ngClass]="{'recording': this.grabando}">
+      <div class="card-content">
+        <!-- Instructions when not recording -->
+        <div *ngIf="!grabando" class="instructions-container">
+          <div class="instructions">
+            <ion-icon name="mic-outline" class="mic-icon"></ion-icon>
+            <h2>Instrucciones</h2>
+            <p>Por favor, di lo siguiente claramente:</p>
+            <div class="voice-command">
+              <ion-icon name="quote-outline"></ion-icon>
+              <div class="command-text">
+                <span class="highlight">fecha</span> [día y mes], 
+                <span class="highlight">hora</span> [hora y periodo], 
+                <span class="highlight">motivo</span> [queratometría o refracción].
+              </div>
+            </div>
+            <p class="example">Ejemplo: " fecha 15 de mayo, hora 3 PM, motivo refracción."</p>
+          </div>
+          
+          <ion-button expand="block" class="start-button bg-gradient-to-r from-teal-600 to-teal-500 rounded-xl" (click)="iniciarReconocimiento()">
+            <ion-icon name="mic-outline" slot="start"></ion-icon>
+            Iniciar reconocimiento
+          </ion-button>
+        </div>
+
+        <!-- Recording state -->
+        <div *ngIf="grabando" class="recording-container">
+          <div class="pulse-animation">
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <ion-icon name="mic" class="recording-icon"></ion-icon>
+          </div>
+          
+          <h2>Escuchando...</h2>
+          <p class="listening-text">Hable claramente cerca del micrófono</p>
+          
+          <div class="wave-container">
+            <div class="wave-bar" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]"></div>
+          </div>
+          
+          <ion-button expand="block" color="danger" class="stop-button" (click)="detenerReconocimiento()">
+            <ion-icon name="stop-circle-outline" slot="start"></ion-icon>
+            Detener reconocimiento
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appointments Section -->
+    <div class="appointments-section" *ngIf="citas && citas.length > 0">
+      <h2 class="section-title">
+        <ion-icon name="calendar-outline"></ion-icon>
+        Citas Reconocidas
+      </h2>
+      
+      <div class="appointments-container">
+        <div class="appointment-card" *ngFor="let cita of citas; let i = index" [class.animate-in]="true" [style.animation-delay]="i * 0.1 + 's'">
+          <div class="appointment-header">
+            <div class="appointment-avatar">
+              {{cita.motivo}}
+            </div>
+            <div class="appointment-title">
+              <h3>{{ cita.motivo }}</h3>
+              <span class="appointment-type" [ngClass]="{'refraccion': cita.motivo === 'refracción', 'queratometria': cita.motivo === 'queratometría'}">
+                {{ cita.motivo }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="appointment-details">
+            <div class="detail-item">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>{{ cita.fecha }}</span>
+            </div>
+            <div class="detail-item">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>{{ cita.hora }}</span>
+            </div>
+          </div>
+          
+          <div class="appointment-actions">
+            <ion-button fill="clear" class="edit-button">
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" color="danger" class="delete-button">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button expand="block" class="confirm-button" (click)="confirmarCita(cita)">
+              <ion-icon name="volume-high-outline" slot="start"></ion-icon>
+              Escuchar confirmación
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Empty state when no appointments -->
+    <div class="empty-state" *ngIf="!citas || citas.length === 0">
+      <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+      <h3>No hay citas reconocidas</h3>
+      <p>Utiliza el reconocimiento de voz para agendar una cita</p>
+    </div>
+  </div>
+</ion-content>

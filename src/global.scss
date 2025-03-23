@@ -17,7 +17,9 @@
     display: flex !important;
   }
   
-
+  .swal2-container {
+    z-index: 9999 !important;
+  }
 @import "@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */

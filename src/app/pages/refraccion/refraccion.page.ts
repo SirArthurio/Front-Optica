@@ -18,6 +18,8 @@ import {
   agudezaCc,
   sucursales,
 } from 'src/app/components/valoresExamenes';
+import { MenuController } from '@ionic/angular'; 
+
 
 @Component({
   selector: 'app-refraccion',
@@ -39,7 +41,7 @@ export class RefraccionPage implements OnInit {
 
   ExamenRefraccion: FormGroup;
   private form = inject(FormBuilder);
-  constructor() {
+  constructor(private menu: MenuController) {
     this.ExamenRefraccion = this.form.group({
       esferaOjoDerecho: ['', Validators.required],
       esferaOjoIzquierdo: ['', Validators.required],
@@ -82,6 +84,9 @@ export class RefraccionPage implements OnInit {
       console.log('error', this.ExamenRefraccion.errors);
     }
   }
-
+  
+  openMenu() {
+    this.menu.open("menu2")
+  }
   ngOnInit() {}
 }

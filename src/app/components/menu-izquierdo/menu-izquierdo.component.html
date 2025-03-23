@@ -1,0 +1,56 @@
+<ion-menu side="start" contentId="main-content" menuId="m1" class="main-menu">
+  <div class="bg-gradient-to-br from-teal-700 to-teal-900 text-white">
+    <div class="p-5 flex items-center">
+      <div class="w-10 h-10 rounded-md bg-white/20 flex items-center justify-center mr-3">
+        <ion-icon name="grid-outline" class="text-2xl"></ion-icon>
+      </div>
+      <h2 class="text-xl font-bold">Menú Principal</h2>
+    </div>
+  </div>
+  
+  <ion-content>
+    <div class="p-3">
+      <ion-menu-toggle menu="m1" auto-hide="true">
+        <div class="space-y-2">
+          <ng-container *ngFor="let item of menuFiltrado">
+            <a
+              [routerLink]="[item.url]"
+              routerLinkActive="menu-item-active"
+              class="menu-item flex items-center p-3 rounded-lg text-gray-700 hover:bg-teal-50 transition-all duration-200 ease-in-out"
+            >
+              <div class="w-9 h-9 rounded-lg bg-teal-100 flex items-center justify-center mr-3">
+                <ion-icon [name]="item.icon" class="text-teal-600 text-lg"></ion-icon>
+              </div>
+              <span class="font-medium">{{ item.title }}</span>
+            </a>
+          </ng-container>
+        </div>
+
+        <div class="mt-8 px-3">
+          <div class="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-4 border border-teal-100">
+            <h3 class="font-semibold text-teal-800 mb-2">¿Necesitas ayuda?</h3>
+            <p class="text-sm text-teal-700 mb-3">Consulta nuestra sección de ayuda o contacta con soporte.</p>
+            <a 
+              routerLink="/help" 
+              class="inline-flex items-center text-sm font-medium text-teal-600 hover:text-teal-800"
+            >
+              Ver ayuda
+              <ion-icon name="chevron-forward" class="ml-1"></ion-icon>
+            </a>
+          </div>
+        </div>
+      </ion-menu-toggle>
+    </div>
+  </ion-content>
+  
+  <ion-footer class="border-t border-gray-100">
+    <div class="p-4">
+      <div class="flex items-center justify-between text-sm text-gray-500">
+        <span>Versión 1.0.0</span>
+        <a routerLink="/settings" class="text-teal-600 hover:text-teal-800">
+          Configuración
+        </a>
+      </div>
+    </div>
+  </ion-footer>
+</ion-menu>

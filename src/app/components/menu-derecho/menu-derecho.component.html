@@ -1,0 +1,94 @@
+<section>
+  <ion-menu side="end" contentId="main-content" menuId="menu2" class="profile-menu">
+    <div class="bg-gradient-to-r from-teal-600 to-cyan-600 text-white">
+      <div class="p-6 flex flex-col items-center">
+        <div class="w-24 h-24 rounded-full bg-white/20 mb-4 flex items-center justify-center overflow-hidden">
+          <ion-avatar class="w-full h-full">
+            <img 
+              [src]=" 'assets/default-avatar.png'" 
+              alt="Foto de perfil"
+              onError="this.src='https://ionicframework.com/docs/img/demos/avatar.svg'"
+            />
+          </ion-avatar>
+        </div>
+        <h2 class="text-xl font-bold">  'Usuario' </h2>
+        <p class="text-teal-100 text-sm"> 'Invitado</p>
+      </div>
+    </div>
+    
+    <ion-content class="ion-no-padding">
+      <div class="py-2">
+        <ion-list lines="none" class="bg-transparent px-0">
+          <ion-menu-toggle menu="menu2" auto-hide="true">
+            <div class="px-3 py-2">
+              <h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider px-3 mb-1">
+                Menú de Perfil
+              </h3>
+            </div>
+            
+            <ng-container *ngFor="let item of menuFiltrado">
+              <a
+                [routerLink]="[item.url]"
+                routerLinkActive="menu-item-active"
+                class="menu-item flex items-center px-3 py-3 mx-2 my-1 rounded-lg text-gray-700 hover:bg-teal-50 transition-colors duration-150"
+              >
+                <div class="flex items-center w-full">
+                  <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center mr-3">
+                    <ion-icon [name]="item.icon" class="text-teal-600 text-xl"></ion-icon>
+                  </div>
+                  <span class="font-medium">{{ item.title }}</span>
+                </div>
+              </a>
+            </ng-container>
+            
+            <div class="border-t border-gray-100 my-4 mx-3"></div>
+            
+            <div class="px-3 py-2">
+              <h3 class="text-xs font-semibold uppercase text-gray-500 tracking-wider px-3 mb-1">
+                Configuración
+              </h3>
+            </div>
+            
+            <a
+              routerLink="/settings"
+              routerLinkActive="menu-item-active"
+              class="menu-item flex items-center px-3 py-3 mx-2 my-1 rounded-lg text-gray-700 hover:bg-teal-50 transition-colors duration-150"
+            >
+              <div class="flex items-center w-full">
+                <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center mr-3">
+                  <ion-icon name="settings-outline" class="text-teal-600 text-xl"></ion-icon>
+                </div>
+                <span class="font-medium">Configuración</span>
+              </div>
+            </a>
+            
+            <a
+              routerLink="/help"
+              routerLinkActive="menu-item-active"
+              class="menu-item flex items-center px-3 py-3 mx-2 my-1 rounded-lg text-gray-700 hover:bg-teal-50 transition-colors duration-150"
+            >
+              <div class="flex items-center w-full">
+                <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center mr-3">
+                  <ion-icon name="help-circle-outline" class="text-teal-600 text-xl"></ion-icon>
+                </div>
+                <span class="font-medium">Ayuda</span>
+              </div>
+            </a>
+            
+            <div class="px-5 py-4 mt-4">
+              <ion-button 
+                expand="block" 
+                color="danger" 
+                class="logout-button w-full rounded-lg overflow-hidden shadow-md" 
+                (click)="logout()"
+              >
+                <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                Cerrar Sesión
+              </ion-button>
+            </div>
+          </ion-menu-toggle>
+        </ion-list>
+      </div>
+    </ion-content>
+  </ion-menu>
+</section>

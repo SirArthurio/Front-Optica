@@ -1,0 +1,144 @@
+<ion-content [fullscreen]="true" class="store-content">
+  <!-- Header Banner -->
+  <div class="store-banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Colección Premium</h1>
+      <p class="banner-subtitle">Descubre nuestras gafas de diseñador</p>
+    </div>
+  </div>
+
+  <div class="store-container">
+    <!-- Filter Sidebar -->
+    <section class="filter-sidebar">
+      <div class="filter-header">
+        <h2 class="filter-title">Filtros</h2>
+        <ion-button fill="clear" size="small" class="reset-btn">
+          <ion-icon name="refresh-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <form [formGroup]="FormFiltro" class="filter-form">
+        <div class="filter-group">
+          <label class="filter-label">Categoría</label>
+          <div class="custom-select-wrapper">
+            <select class="custom-select" formControlName="filtro">
+              <option value="todos">Todos los estilos</option> 
+              <option *ngFor="let categoria of categorias" [value]="categoria">
+                {{ categoria }}
+              </option>
+            </select>
+            <ion-icon name="chevron-down" class="select-icon"></ion-icon>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Precio</label>
+          <div class="price-range">
+            <ion-range aria-label="Rango de precio" [dualKnobs]="true" [min]="0" [max]="500" [pin]="true" [ticks]="true" [snaps]="true" class="custom-range">
+              <ion-label slot="start">$0</ion-label>
+              <ion-label slot="end">$500</ion-label>
+            </ion-range>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Marca</label>
+          <div class="filter-options">
+            <ion-chip *ngFor="let marca of ['Ray-Ban', 'Oakley', 'Gucci', 'Prada']" outline="true" [color]="'primary'" class="filter-chip">
+              <ion-label>{{marca}}</ion-label>
+            </ion-chip>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Color</label>
+          <div class="color-options">
+            <div *ngFor="let color of ['#000', '#964B00', '#0073CF', '#808080', '#FFD700']" 
+                 class="color-option" 
+                 [style.background-color]="color">
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-grid">
+      <div class="products-header">
+        <div class="results-count">
+          <span>{{ filteredProducts.length }} productos</span>
+        </div>
+        <div class="sort-options">
+          <ion-segment value="featured" class="custom-segment">
+            <ion-segment-button value="featured">
+              <ion-label>Destacados</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="newest">
+              <ion-label>Nuevos</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="price">
+              <ion-label>Precio</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </div>
+      </div>
+
+      <div class="products-container">
+        <div class="product-card" *ngFor="let item of filteredProducts; let i = index" 
+             [class.animate-in]="true" 
+             [style.animation-delay]="i * 0.05 + 's'">
+          <a [routerLink]="['/producto/', item.id]" class="product-link">
+            <div class="product-badge" *ngIf="i < 3">Nuevo</div>
+            
+            <div class="product-image-container">
+              <img alt="{{item.nombre}}" [src]="'https://www.lafam.com.co/cdn/shop/files/front-0RX7230__5204__P21__shad__al2.jpg?v=1710342527'" class="product-image" />
+              
+              <div class="product-actions">
+                <ion-button fill="clear" class="action-btn">
+                  <ion-icon name="heart-outline"></ion-icon>
+                </ion-button>
+                <ion-button fill="clear" class="action-btn">
+                  <ion-icon name="eye-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+            
+            <div class="product-info">
+              <div class="product-brand">Designer Collection</div>
+              <h3 class="product-title">{{item.nombre}}</h3>
+              <div class="product-rating">
+                <ion-icon name="star" *ngFor="let star of [1,2,3,4,5]"></ion-icon>
+              </div>
+              <p class="product-description">{{ item.descripcion }}</p>
+              <div class="product-price">
+                <span class="current-price">${{ 99 + i * 20 }}.99</span>
+                <span class="original-price" *ngIf="i % 2 === 0">${{ 129 + i * 20 }}.99</span>
+              </div>
+            </div>
+          </a>
+          
+          <ion-button expand="block" class="add-to-cart-btn">
+            <ion-icon name="bag-add-outline" slot="start"></ion-icon>
+            Añadir al carrito
+          </ion-button>
+        </div>
+      </div>
+      
+      <!-- Empty state if no products -->
+      <div class="empty-state" *ngIf="filteredProducts.length === 0">
+        <ion-icon name="search-outline" class="empty-icon"></ion-icon>
+        <h3>No se encontraron productos</h3>
+        <p>Intenta con otros filtros</p>
+        <ion-button fill="outline">Limpiar filtros</ion-button>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Floating cart button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" class="cart-fab">
+      <ion-icon name="bag-outline"></ion-icon>
+      <span class="cart-badge">3</span>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

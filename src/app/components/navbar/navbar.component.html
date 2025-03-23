@@ -1,0 +1,112 @@
+<ion-header class="z-10" [translucent]="true" *ngIf="!isLogin">
+  <ion-toolbar class="px-1 md:px-4">
+    <ion-buttons slot="start">
+      <ion-menu-button
+        id="m1"
+        menu="m1"
+        class="text-gray-800 hover:bg-gray-100 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+      ></ion-menu-button>
+
+      <div class="hidden md:flex items-center ml-2">
+        <img
+          src="../../../assets/icon/logoOptica.png"
+          alt="Logo"
+          class="h-8 w-auto"
+          onError="this.src='https://via.placeholder.com/120x40?text=LOGO'; this.onerror=null;"
+        />
+      </div>
+    </ion-buttons>
+
+    <ion-title class="text-center font-medium text-gray-800">{{
+      title
+    }}</ion-title>
+
+    <ion-buttons slot="end" *ngIf="isAuthenticate" class="flex items-center">
+      <ion-button
+        class="relative w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+        (click)="toggleSearch()"
+      >
+        <ion-icon name="search-outline" class="text-xl"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        routerLink="/carrito"
+        class="relative w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+      >
+        <ion-icon name="cart-outline" class="text-xl"></ion-icon>
+        <ion-badge
+          *ngIf="cantidadCarrito > 0"
+          class="absolute -top-1 -right-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1"
+          [@badgeAnimation]
+        >
+          {{ cantidadCarrito }}
+        </ion-badge>
+      </ion-button>
+
+      <ion-menu-toggle menu="menu2">
+        <ion-button
+          class="ml-1 relative overflow-hidden rounded-full border-2 border-transparent hover:border-teal-500 transition-all duration-300"
+        >
+          <ion-avatar class="w-9 h-9">
+            <img
+              alt="Avatar del usuario"
+              src="https://ionicframework.com/docs/img/demos/avatar.svg"
+              class="w-full h-full object-cover"
+            />
+          </ion-avatar>
+          <div
+            class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"
+          ></div>
+        </ion-button>
+      </ion-menu-toggle>
+    </ion-buttons>
+
+    <ion-buttons
+      slot="end"
+      *ngIf="!isAuthenticate"
+      class="flex items-center gap-2 pr-2"
+    >
+      <ion-button
+        [routerLink]="['/login']"
+        class="font-medium text-sm px-4 py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+      >
+        <ion-icon name="log-in-outline" class="mr-1"></ion-icon>
+        Iniciar Sesión
+      </ion-button>
+
+      <ion-button
+        [routerLink]="['/register']"
+        class="font-medium text-sm px-4 py-2 rounded-lg border border-teal-600 text-teal-600 hover:bg-teal-50 transition-colors"
+      >
+        <ion-icon name="person-add-outline" class="mr-1"></ion-icon>
+        Registrarse
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <div
+    *ngIf="showSearch"
+    [@searchAnimation]
+    class="bg-white border-b border-gray-200 px-4 py-2"
+  >
+    <div class="flex items-center bg-gray-100 rounded-lg px-3 py-2">
+      <ion-icon name="search-outline" class="text-gray-500 mr-2"></ion-icon>
+      <input
+        type="text"
+        placeholder="Buscar productos..."
+        class="bg-transparent border-none outline-none w-full text-gray-800"
+      />
+      <ion-button
+        fill="clear"
+        color="medium"
+        class="p-0 h-auto"
+        (click)="toggleSearch()"
+      >
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+</ion-header>
+
+<app-menu-izquierdo [rol]="this.rolUser" />
+<app-menu-derecho [rol]="this.rolUser" />

@@ -1,0 +1,21 @@
+<ion-content [fullscreen]="true">
+  <div class="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+      <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">Perfil de Usuario</h1>
+      <div class="space-y-4">
+        <div class="flex justify-between">
+          <span class="font-semibold text-gray-600">Nombre:</span>
+          <span>{{ Perfil?.nombre }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-semibold text-gray-600">Apellido:</span>
+          <span>{{ Perfil?.apellido }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-semibold text-gray-600">Cédula:</span>
+          <span>{{ Perfil?.cedula }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

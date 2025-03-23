@@ -1,0 +1,16 @@
+<ion-content class="m-4">
+  <div *ngFor="let item of cards" class=" grid grid-cols-1 md:grid-cols-4 p-4 ">
+    <ng-container *ngIf="[item.rol]">
+      <a [routerLink]="[item.url]" class="card-link">
+        <div class="card">
+          <div class="image-container">
+            <img [src]="item?.img" alt="Docente Ocasional" class="image" />
+          </div>
+          <div class="card-title">{{item.nombre}}</div>
+        </div>
+      </a>
+    </ng-container>
+  </div>
+</ion-content>
+
+
