@@ -1,16 +1,113 @@
+<ion-content [fullscreen]="true" class="bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
+  <div class="container mx-auto px-4 py-8 max-w-6xl">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-3">
+        Exámenes Visuales
+      </h1>
+      <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        Seleccione el tipo de examen que desea realizar para continuar con el proceso de evaluación visual.
+      </p>
+    </div>
 
-
-<ion-content [fullscreen]="true" class="Examenes">
-  <ion-grid class="container">
-    <section class="grid grid-cols-1 p-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="col text-center">
-        <button class="border rounded-md w-full m-2  p-2 bg-[#008b8b]" [routerLink]="['/queratometria']"  >Examen Queratometria</button>
+    <!-- Cards Container -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+      
+      <!-- Queratometria Card -->
+      <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-teal-500"></div>
+        <div class="p-6 md:p-8">
+          <div class="w-16 h-16 mb-6 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center mx-auto">
+            <ion-icon name="eye-outline" class="text-3xl text-cyan-600 dark:text-cyan-400"></ion-icon>
+          </div>
+          
+          <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white text-center mb-3">
+            Examen de Queratometría
+          </h2>
+          
+          <p class="text-gray-600 dark:text-gray-300 text-center mb-6">
+            Medición de la curvatura de la córnea para determinar su forma y potencia.
+          </p>
+          
+          <div class="flex flex-col space-y-3">
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Evaluación de astigmatismo corneal</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Adaptación de lentes de contacto</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Detección de irregularidades</span>
+            </div>
+          </div>
+          
+          <button [routerLink]="['/queratometria']" 
+                  class="w-full mt-8 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center group-hover:shadow-lg">
+            <span>Iniciar Examen</span>
+            <ion-icon name="arrow-forward" class="ml-2 transition-transform duration-300 group-hover:translate-x-1"></ion-icon>
+          </button>
+        </div>
       </div>
-      <div class="col text-center">
-        <button class="border rounded-md w-full m-2 p-2 bg-[#008b8b]"[routerLink]="['/refraccion']"  >Examen Consulta </button>
+      
+      <!-- Consulta Card -->
+      <div class="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-400 to-emerald-500"></div>
+        <div class="p-6 md:p-8">
+          <div class="w-16 h-16 mb-6 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto">
+            <ion-icon name="medical-outline" class="text-3xl text-teal-600 dark:text-teal-400"></ion-icon>
+          </div>
+          
+          <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-white text-center mb-3">
+            Examen de Refracción
+          </h2>
+          
+          <p class="text-gray-600 dark:text-gray-300 text-center mb-6">
+            Evaluación completa para determinar la prescripción óptica adecuada.
+          </p>
+          
+          <div class="flex flex-col space-y-3">
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Medición de agudeza visual</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Determinación de graduación</span>
+            </div>
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+              <ion-icon name="checkmark-circle" class="text-teal-500 mr-2"></ion-icon>
+              <span>Evaluación de visión binocular</span>
+            </div>
+          </div>
+          
+          <button [routerLink]="['/refraccion']" 
+                  class="w-full mt-8 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center group-hover:shadow-lg">
+            <span>Iniciar Consulta</span>
+            <ion-icon name="arrow-forward" class="ml-2 transition-transform duration-300 group-hover:translate-x-1"></ion-icon>
+          </button>
+        </div>
       </div>
-    </section>
-   
+    </div>
     
-  </ion-grid>
+    <!-- Additional Info -->
+    <div class="mt-12 bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 max-w-4xl mx-auto">
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+            <ion-icon name="information-circle-outline" class="text-xl text-blue-600 dark:text-blue-400"></ion-icon>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-medium text-gray-800 dark:text-white mb-1">Información importante</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">
+            Recuerde que para realizar estos exámenes es necesario contar con los equipos adecuados y seguir los protocolos establecidos. Si tiene alguna duda, consulte con el personal especializado.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
+

@@ -1,101 +1,106 @@
 import { Injectable } from '@angular/core';
-import { SpeechRecognition } from '@capacitor-community/speech-recognition'; // Importa el plugin
+import { SpeechRecognition } from '@capacitor-community/speech-recognition';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServicioReconocimientoVoz {
   private reconocedor: any;
-  private isNative = false; // Para saber si estamos en Android/iOS
+  private isNative = false;
 
   constructor() {
-    // Verifica si estamos en un entorno nativo (Android/iOS)
-    this.isNative = (window as any).capacitor !== undefined;
+    this.isNative = Capacitor.isNativePlatform();
 
     if (!this.isNative) {
-      // Usar la API de Web Speech en la web
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        throw new Error('Tu navegador no soporta la API de Web Speech.');
-      }
-
-      this.reconocedor = new SpeechRecognition();
-      this.reconocedor.lang = 'es-ES';
-      this.reconocedor.continuous = false;
-      this.reconocedor.interimResults = false;
-    } else {
-      // Configura el plugin de Capacitor para Android/iOS
-      SpeechRecognition.requestPermissions(); // Solicita permisos
+      this.inicializarReconocimientoWeb();
     }
   }
 
-  iniciarReconocimiento(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      if (!this.isNative) {
-        // Verificar permisos en la web
-        navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(() => {
-            this.reconocedor.onresult = (evento: any) => {
-              const resultado = evento.results[0][0].transcript;
-              resolve(resultado); // Devuelve el texto reconocido
-            };
-  
-            this.reconocedor.onerror = (evento: any) => {
-              if (evento.error === 'not-allowed') {
-                reject('Permisos de micrófono no otorgados. Por favor, permite el acceso al micrófono.');
-              } else {
-                reject(evento.error);
-              }
-            };
-  
-            this.reconocedor.onend = () => {
-              // Resolver la promesa cuando el reconocimiento termine
-              resolve('');
-            };
-  
-            this.reconocedor.start();
-          })
-          .catch((error) => {
-            reject('No se pudo acceder al micrófono. Asegúrate de que los permisos estén habilitados.');
-          });
-      } else {
-        // Lógica para Android/iOS
-        SpeechRecognition.start({
+  private inicializarReconocimientoWeb() {
+    const SpeechRecognitionAPI = (window as any).SpeechRecognition || 
+                               (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionAPI) {
+      console.warn('Tu navegador no soporta la API de Web Speech.');
+      return;
+    }
+
+    this.reconocedor = new SpeechRecognitionAPI();
+    this.reconocedor.lang = 'es-ES';
+    this.reconocedor.continuous = false;
+    this.reconocedor.interimResults = false;
+  }
+
+  async iniciarReconocimiento(): Promise<string> {
+    if (this.isNative) {
+      try {
+        // Paso 1: Verificar permisos
+        const permiso = await SpeechRecognition.checkPermissions();
+        
+        if (permiso.speechRecognition !== 'granted') {
+          // Paso 2: Solicitar permisos si no están concedidos
+          await SpeechRecognition.requestPermissions();
+        }
+
+        // Paso 3: Iniciar reconocimiento
+        const { matches } = await SpeechRecognition.start({
           language: 'es-ES',
-          prompt: 'Habla ahora',
+          prompt: 'Por favor, habla ahora',
           partialResults: false,
           popup: true,
-        })
-          .then(({ matches }) => {
-            if (matches && matches.length > 0) {
-              resolve(matches[0]);
-            } else {
-              reject('No se reconoció ningún texto.');
-            }
-          })
-          .catch((error) => {
-            reject('Error en el reconocimiento de voz: ' + error.message);
-          });
-      }
-    });
-  }
+          maxResults: 1
+        });
 
-  hablar(texto: string): void {
-    if ('speechSynthesis' in window) {
-      const synthesis = window.speechSynthesis;
-      const utterance = new SpeechSynthesisUtterance(texto);
-      utterance.lang = 'es-ES'; 
-      synthesis.speak(utterance); 
+        return matches?.[0] || '';
+      } catch (error) {
+        console.error('Error en reconocimiento:', error);
+        throw new Error('No se pudo iniciar el reconocimiento de voz');
+      }
     } else {
-      console.warn('Tu navegador no soporta la síntesis de voz.');
+      return new Promise((resolve, reject) => {
+        if (!this.reconocedor) {
+          reject('Reconocimiento de voz no disponible');
+          return;
+        }
+
+        this.reconocedor.onresult = (evento: any) => {
+          resolve(evento.results[0][0].transcript);
+        };
+
+        this.reconocedor.onerror = (evento: any) => {
+          reject(evento.error);
+        };
+
+        this.reconocedor.start();
+      });
     }
   }
+
+  async hablar(texto: string): Promise<void> {
+    if (this.isNative) {
+      try {
+        await TextToSpeech.speak({
+          text: texto,
+          lang: 'es-ES',
+          rate: 1.0
+        });
+      } catch (error) {
+        console.error('Error al hablar:', error);
+      }
+    } else {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = 'es-ES';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  }
+
   async detenerReconocimiento(): Promise<void> {
     if (this.isNative) {
-      // Detener el reconocimiento en Android/iOS
       await SpeechRecognition.stop();
-    } else {
-      // Detener el reconocimiento en la web
+    } else if (this.reconocedor) {
       this.reconocedor.stop();
     }
   }

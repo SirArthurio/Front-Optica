@@ -1,215 +1,424 @@
-<ion-content [fullscreen]="true">
-  <ion-grid>
-    <form [formGroup]="ExamenRefraccion">
-      <div>
-        <section class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
-          <label for="">Surcurzal</label>
-          <select
-            class="form-control m-2 w-full p-2 m-2 text-black rounded-md"
-            formControlName="surcurzal"
-          >
-            <option *ngFor="let item of sucursales" [value]="[item.nombre]">
-              {{item.nombre}}
-            </option>
-          </select>
-        </section>
+<ion-content [fullscreen]="true" class="bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-gray-900 dark:to-gray-800">
+  <div class="container mx-auto px-4 py-8 max-w-5xl">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white flex items-center">
+        <ion-icon name="medical-outline" class="mr-3 text-teal-600 dark:text-teal-400"></ion-icon>
+        Examen de Refracción
+      </h1>
+      <p class="text-gray-600 dark:text-gray-300 mt-2">
+        Complete los datos del examen para determinar la prescripción óptica adecuada.
+      </p>
+    </div>
+
+    <form [formGroup]="ExamenRefraccion" class="space-y-6">
+      <!-- Card Container -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
+        <!-- Progress Indicator -->
+        <div class="w-full bg-gray-100 dark:bg-gray-700 h-1">
+          <div class="bg-gradient-to-r from-teal-400 to-cyan-500 h-1 w-1/4"></div>
+        </div>
+        
+        <!-- Sucursal Section -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mr-3">
+              <ion-icon name="business-outline" class="text-xl text-teal-600 dark:text-teal-400"></ion-icon>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Información General</h2>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <label for="sucursal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Sucursal
+              </label>
+              <div class="relative">
+                <select
+                  id="sucursal"
+                  formControlName="surcurzal"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccione una sucursal</option>
+                  <option *ngFor="let item of sucursales" [value]="[item.nombre]">
+                    {{item.nombre}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ojo Derecho Section -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center mr-3">
+              <ion-icon name="eye-outline" class="text-xl text-cyan-600 dark:text-cyan-400"></ion-icon>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Ojo Derecho</h2>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Esfera -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Esfera
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="esferaOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of esfera" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Cilindro -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Cilindro
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="cilindroOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of cilindro" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Eje -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Eje
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="ejeOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of eje" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Add -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Add
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="adicionOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of adicion" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- DNP -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                DNP
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="dnpOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of dnp" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Agudeza SC -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Agudeza SC
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="agudezaScOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of agudezaSc" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Agudeza CC -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Agudeza CC
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="agudezaCcOjoDerecho"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of agudezaCc" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Ojo Izquierdo Section -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3">
+              <ion-icon name="eye-outline" class="text-xl text-blue-600 dark:text-blue-400"></ion-icon>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Ojo Izquierdo</h2>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Esfera -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Esfera
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="esferaOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of esfera" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Cilindro -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Cilindro
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="cilindroOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of cilindro" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Eje -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Eje
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="ejeOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of eje" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Add -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Add
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="adicionOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of adicion" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- DNP -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                DNP
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="dnpOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of dnp" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Agudeza SC -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Agudeza SC
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="agudezaScOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of agudezaSc" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Agudeza CC -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Agudeza CC
+              </label>
+              <div class="relative">
+                <select
+                  formControlName="agudezaCcOjoIzquierdo"
+                  class="block w-full pl-3 pr-10 py-2.5 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none transition-colors duration-200"
+                >
+                  <option value="" disabled selected>Seleccionar</option>
+                  <option *ngFor="let item of agudezaCc" [value]="item.valor">
+                    {{item.valor}}
+                  </option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                  <ion-icon name="chevron-down-outline"></ion-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Comentario Section -->
+        <div class="p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3">
+              <ion-icon name="chatbox-outline" class="text-xl text-purple-600 dark:text-purple-400"></ion-icon>
+            </div>
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Comentarios</h2>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Observaciones adicionales
+            </label>
+            <div class="mt-1">
+              <textarea
+                rows="3"
+                formControlName="comentario"
+                class="block w-full px-3 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors duration-200"
+                placeholder="Ingrese cualquier observación relevante..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
       </div>
-      <div
-        class="border rounded-md p-2 m-2 bg-[#008b8b] text-white grid grid-cols-1"
-      >
-        <label for=""> Ojo Derecho</label>
-        <section class="grid grid-cols-1 md:grid-cols-3">
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="m1">Esfera</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="esferaOjoDerecho"
-            >
-              <option *ngFor="let item of esfera" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="m1">cilindro:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="cilindroOjoDerecho"
-            >
-              <option *ngFor="let item of cilindro" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Eje:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="ejeOjoDerecho"
-            >
-              <option *ngFor="let item of eje" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Add:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="adicionOjoDerecho"
-            >
-              <option *ngFor="let item of adicion" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Dnp:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="dnpOjoDerecho"
-            >
-              <option *ngFor="let item of dnp" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">AgudezaSc:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="agudezaScOjoDerecho"
-            >
-              <option *ngFor="let item of agudezaSc" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">AgudezaCc:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="agudezaCcOjoDerecho"
-            >
-              <option *ngFor="let item of agudezaCc" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-        </section>
+      
+      <!-- Action Buttons -->
+      <div class="flex justify-end space-x-3">
+        <button type="button" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
+          Cancelar
+        </button>
+        
+        <ion-button 
+          id="present-alert"
+          class="px-5 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium rounded-lg shadow-md hover:from-teal-600 hover:to-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-200"
+        >
+          <ion-icon name="save-outline" class="mr-2"></ion-icon>
+          Guardar
+        </ion-button>
+        
+        <ion-alert
+          trigger="present-alert"
+          header="Confirmar acción"
+          subHeader="Guardar examen de refracción"
+          message="¿Está seguro de guardar los datos del examen? Esta acción no se puede deshacer."
+          [buttons]="alertButtons"
+          class="custom-alert"
+        ></ion-alert>
       </div>
-      <div
-        class="border rounded-md p-2 m-2 bg-[#008b8b] text-white grid grid-cols-1"
-      >
-        <label for=""> Ojo Izquierdo</label>
-        <section class="grid grid-cols-1 md:grid-cols-3">
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="m1">Esfera</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="esferaOjoIzquierdo"
-            >
-              <option *ngFor="let item of esfera" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="m1">cilindro:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="cilindroOjoIzquierdo"
-            >
-              <option *ngFor="let item of cilindro" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Eje:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="ejeOjoIzquierdo"
-            >
-              <option *ngFor="let item of eje" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Add:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="adicionOjoDerecho"
-            >
-              <option *ngFor="let item of adicion" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">Dnp:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="dnpOjoDerecho"
-            >
-              <option *ngFor="let item of dnp" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">AgudezaSc:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="agudezaScOjoDerecho"
-            >
-              <option *ngFor="let item of agudezaSc" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-
-          <section class="grid grid-cols-1 m-1 p-1 text-center">
-            <label class="">AgudezaCc:</label>
-            <select
-              class="form-control text-black rounded-md"
-              formControlName="agudezaCcOjoDerecho"
-            >
-              <option *ngFor="let item of agudezaCc" [value]="item.valor">
-                {{item.valor}}
-              </option>
-            </select>
-          </section>
-        </section>
-      </div>
-
-      <div class="border rounded-md p-4 m-2 bg-[#008b8b] text-white">
-        <label for="">Comentario</label>
-        <ion-input
-          class="form-input rounded-md m-2 px-2 bg-white text-black"
-          formControlName="comentario"
-        ></ion-input>
-      </div>
-
-      <ion-button class="place-self-end" id="present-alert">Guardar</ion-button>
-      <ion-alert
-        trigger="present-alert"
-        header="Advertencia!"
-        message="¿Estas seguro de guardar los datos?"
-        [buttons]="alertButtons"
-      ></ion-alert>
     </form>
-  </ion-grid>
+  </div>
 </ion-content>
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ServicioReconocimientoVoz } from 'src/app/components/ServicioReconocimientoVoz.service';
 import { IonHeader } from '@ionic/angular/standalone';
 import { IonicModule } from '@ionic/angular';
@@ -13,6 +13,7 @@ import {
 import { AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/Context/auth.service';
 import { CitasService } from 'src/app/API/citas.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-cita',
@@ -30,11 +31,13 @@ import { CitasService } from 'src/app/API/citas.service';
 export class CitaPage implements OnInit {
   textoReconocido = '';
   grabando = false;
-  citas: { userId: string; fecha: string; hora: string; motivo: string }[] = []; 
+  citas: { userId: string; fecha: string; hora: string; motivo: string }[] = [];
   confirmando = false;
   cedula: string | null = '';
   userId: string = localStorage.getItem('id')!;
-
+  textoescuchado=''
+  citasAgendadas: any[]  = [];
+  cargandoCitas: boolean = false;
   citaForm = new FormGroup({
     id: new FormControl(''),
     fecha: new FormControl('', Validators.required),
@@ -44,16 +47,78 @@ export class CitaPage implements OnInit {
 
   constructor(
     private reconocimientoVoz: ServicioReconocimientoVoz,
-    private alertCtrl: AlertController,
-    private cita: CitasService
+    private citaService: CitasService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
+    this.cargarCitas();
+
     this.reconocimientoVoz.hablar(
       'Por favor, di lo siguiente:  Fecha, Hora y Motivo de la consulta. Por ejemplo:  Fecha, 15 de octubre. Hora, 10 de la mañana. Motivo, queratometría.'
     );
     this.cedula = localStorage.getItem('cedula');
   }
+
+  async cargarCitas() {
+    this.cargandoCitas = true;
+    try {
+      const userId = localStorage.getItem('id');
+      if (userId) {
+        this.citaService.obtenerCitasPorUsuario(this.userId).subscribe(
+          (response: any) => {
+            console.log('Respuesta completa:', response);
+            
+            // Acceder correctamente a los datos
+            if (response && response.data) {
+              this.citas = Array.isArray(response.data) ? response.data : [];
+              console.log('Citas asignadas:', this.citas);
+              
+              // Si necesitas transformar los datos:
+              this.citas = this.transformarCitas(response.data);
+            } else {
+              this.citas = [];
+              console.warn('La respuesta no contiene datos de citas');
+            }
+          },
+          (error: any) => {
+            console.error('Error al obtener citas:', error);
+            this.citas = [];
+            if (error.status === 404) {
+              this.mostrarAlerta('No se encontraron citas para este usuario');
+            }
+          }
+        );
+       
+      }
+    } catch (error) {
+      console.error('Error al cargar citas:', error);
+      this.mostrarAlerta('Error al cargar tus citas agendadas');
+    } finally {
+      this.cargandoCitas = false;
+    }
+  }
+  private transformarCitas(citasData: any[]): any[] {
+    return citasData.map(cita => ({
+      id: cita.id,
+      fecha: this.formatearFechaArray(cita.fecha), // Convierte [2025, 12, 2] a Date
+      hora: this.formatearHoraArray(cita.hora),    // Convierte [14, 0] a "14:00"
+      motivo: cita.motivo,
+      // Puedes agregar más campos si necesitas
+      usuario: {
+        nombre: cita.userId.nombre,
+        apellido: cita.userId.apellido
+      }
+    }));
+  }
+  
+private formatearFechaArray(fechaArray: number[]): Date {
+  return new Date(fechaArray[0], fechaArray[1] - 1, fechaArray[2]);
+}
+
+private formatearHoraArray(horaArray: number[]): string {
+  return `${horaArray[0].toString().padStart(2, '0')}:${horaArray[1].toString().padStart(2, '0')}`;
+}
 
   async iniciarReconocimiento(): Promise<void> {
     this.grabando = true;
@@ -61,10 +126,11 @@ export class CitaPage implements OnInit {
       this.textoReconocido =
         await this.reconocimientoVoz.iniciarReconocimiento();
       console.log(this.textoReconocido);
+      this.textoescuchado=this.textoReconocido
       this.procesarTexto(this.textoReconocido);
     } catch (error) {
       console.error('Error en el reconocimiento:', error);
-      alert(error); 
+      alert(error);
     } finally {
       this.grabando = false;
     }
@@ -76,111 +142,129 @@ export class CitaPage implements OnInit {
   }
 
   async procesarTexto(texto: string): Promise<void> {
-    const fechaMatch = texto.match(
-      /Fecha,\s+(\d{1,2}\sde\s\w+|\d{1,2}\/\d{1,2}\/\d{4})/i
-    );
-    const horaMatch = texto.match(
-      /(\d{1,2})\s*(de la\s)?(mañana|tarde|noche)/i
-    );
-    const motivoMatch = texto.match(/Motivo,\s+(queratometría|refracción)/i);
-
-    if (fechaMatch && horaMatch && motivoMatch) {
-      const fecha = fechaMatch[1].trim();
-      const hora = horaMatch[0].trim();
-      const motivo = motivoMatch[1].toLowerCase();
-
-      const fechaFormateada = this.formatearFecha(fecha);
-      const horaFormateada = this.formatearHora(hora);
-
-      if (fechaFormateada && horaFormateada) {
-        const alert = await this.alertCtrl.create({
-          header: 'Confirmar cita',
-          message: `
-            ¿Confirma los siguientes datos para apartar la cita?</p>
-            Cédula: ${this.cedula}
-            Fecha: ${fechaFormateada}
-            Hora: ${horaFormateada}
-            Motivo: ${motivo}
-          `,
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              handler: () => {
-                this.reconocimientoVoz.hablar(
-                  'Cita cancelada. Por favor, intente nuevamente.'
-                );
-              },
-            },
-            {
-              text: 'Confirmar',
-              handler: () => {
-                const itemCita = {
-                  userId: { id: this.userId },
-                  fecha: fechaFormateada,
-                  hora: horaFormateada,
-                  motivo: motivo,
-                };
-
-                this.cita.apartarCita(itemCita).subscribe(
-                  (response: any) => {
-                    if (
-                      response.mensaje ===
-                      'Horario ocupado. Opciones disponibles:'
-                    ) {
-                      const horariosDisponibles = response.horariosDisponibles
-                        .map((hora: number[]) => `${hora[0]}:${hora[1]}`)
-                        .join(', ');
-
-                      this.reconocimientoVoz.hablar(
-                        `Horario ocupado. Los horarios disponibles son: ${horariosDisponibles}`
-                      );
-                      this.mostrarAlerta(
-                        `Horario ocupado. Los horarios disponibles son: ${horariosDisponibles}`
-                      );
-                    } else if (
-                      response.mensaje === 'Cita agendada correctamente.'
-                    ) {
-                      // Cita agendada correctamente
-                      this.reconocimientoVoz.hablar(
-                        'Cita agendada correctamente.'
-                      );
-                      this.mostrarAlerta('Cita agendada correctamente.');
-                    } else {
-                      // Otro mensaje de error
-                      this.reconocimientoVoz.hablar(
-                        'Error al agendar la cita. Por favor, intente nuevamente.'
-                      );
-                      this.mostrarAlerta(
-                        'Error al agendar la cita. Por favor, intente nuevamente.'
-                      );
-                    }
-                  },
-                  (error) => {
-                    console.error('Error al agendar la cita:', error);
-                    this.reconocimientoVoz.hablar(
-                      'Error al agendar la cita. Por favor, intente nuevamente.'
-                    );
-                    this.mostrarAlerta(
-                      'Error al agendar la cita. Por favor, intente nuevamente.'
-                    );
-                  }
-                );
-              },
-            },
-          ],
-        });
-
-        await alert.present();
-      } else {
-        console.error('Fecha o hora no válida');
+    try {
+      // Convertir a minúsculas y normalizar espacios
+      texto = texto.toLowerCase().replace(/\s+/g, ' ').trim();
+      
+      // Extraer componentes con regex más flexibles
+      const fechaMatch = texto.match(/(?:fecha,?\s*)(\d{1,2}\s*de\s*\w+)/i);
+      const horaMatch = texto.match(/(?:hora,?\s*)(\d{1,2})\s*(?:de la\s)?(mañana|tarde|noche)/i);
+      const motivoMatch = texto.match(/(?:motivo,?\s*)(queratometría|refracción|refraccion)/i);
+  
+      if (!fechaMatch || !horaMatch || !motivoMatch) {
+        throw new Error('No se pudieron extraer todos los datos. Por favor di: "Fecha [día y mes], Hora [formato 12h], Motivo [refracción o queratometría]"');
       }
-    } else {
-      console.error('No se pudo extraer la fecha, la hora o el motivo');
+  
+      const fechaCruda = fechaMatch[1].trim();
+      const horaCruda = horaMatch[0].replace('hora,', '').trim();
+      let motivo = motivoMatch[1].trim();
+  
+      // Normalizar motivo
+      motivo = motivo === 'refraccion' ? 'refracción' : motivo;
+  
+      console.log('Datos extraídos:', { fechaCruda, horaCruda, motivo });
+  
+      const fechaFormateada = this.formatearFecha(fechaCruda);
+      const horaFormateada = this.formatearHora(horaCruda);
+  
+      if (!fechaFormateada || !horaFormateada) {
+        throw new Error('Formato de fecha u hora no válido');
+      }
+  
+      console.log('Datos formateados:', { fechaFormateada, horaFormateada, motivo });
+  
+      // Mostrar confirmación
+      await this.mostrarConfirmacion(fechaFormateada, horaFormateada, motivo);
+      
+    } catch (error:any) {
+      console.error('Error al procesar:', error);
+      this.mostrarAlerta(error.message);
+      this.reconocimientoVoz.hablar(error.message);
+    }
+  }
+  
+  async mostrarConfirmacion(fecha: string, hora: string, motivo: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar cita',
+      message: `
+       ¿Confirma estos datos?
+      
+      Fecha: ${fecha}
+      Hora: ${hora}
+      Motivo: ${motivo}
+      `,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.reconocimientoVoz.hablar('Cancelado. Puede intentar nuevamente.');
+          }
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.enviarCitaAlServidor(fecha, hora, motivo);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+  
+  async enviarCitaAlServidor(fecha: string, hora: string, motivo: string) {
+    try {
+      const citaData = {
+        userId: {id:this.userId},
+        fecha: fecha,
+        hora: hora,
+        motivo: motivo
+      };
+  
+      console.log('Enviando a API:', citaData);
+      
+      this.citaService.apartarCita(citaData).subscribe({
+        next: (respuesta: any) => {
+          if (respuesta.mensaje === 'Horario ocupado. Opciones disponibles:') {
+            // Procesar horarios disponibles
+            const horariosDisponibles = respuesta.horariosDisponibles
+              .map((horaArray: number[]) => 
+                `${horaArray[0].toString().padStart(2, '0')}:${horaArray[1].toString().padStart(2, '0')}`
+              )
+              .join(', ');
+  
+            const mensaje = `El horario seleccionado no está disponible. Horarios disponibles: ${horariosDisponibles}`;
+            
+            this.mostrarAlerta(mensaje);
+            this.reconocimientoVoz.hablar(mensaje);
+            
+            // Opcional: Volver a iniciar el reconocimiento
+            setTimeout(() => {
+              this.iniciarReconocimiento();
+            }, 5000);
+            
+          } else if (respuesta.mensaje === 'Cita agendada correctamente.') {
+            this.mostrarAlerta('¡Cita agendada con éxito!');
+            this.reconocimientoVoz.hablar('Su cita ha sido registrada exitosamente');
+          } else {
+            throw new Error(respuesta.mensaje || 'Error desconocido al agendar');
+          }
+        },
+        error: (error) => {
+          console.error('Error en la solicitud:', error);
+          this.mostrarAlerta('Error al conectar con el servidor');
+          this.reconocimientoVoz.hablar('Error al comunicarse con el sistema');
+        }
+      });
+      
+    } catch (error:any) {
+      console.error('Error inesperado:', error);
+      this.mostrarAlerta('Error inesperado: ' + error.message);
+      this.reconocimientoVoz.hablar('Ocurrió un error inesperado');
     }
   }
   async mostrarAlerta(mensaje: string): Promise<void> {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.alertController.create({
       header: 'Información',
       message: mensaje,
       buttons: ['Aceptar'],
@@ -216,17 +300,17 @@ export class CitaPage implements OnInit {
         diciembre: '12',
       };
 
-      const match = fecha.match(/(\d{1,2})\s+de\s+(\w+)/i); 
+      const match = fecha.match(/(\d{1,2})\s+de\s+(\w+)/i);
       if (match) {
-        const dia = match[1].padStart(2, '0'); 
+        const dia = match[1].padStart(2, '0');
         const mesTexto = match[2].toLowerCase();
-        const mes = meses[mesTexto] || '00'; 
+        const mes = meses[mesTexto] || '00';
         if (mes === '00') {
           console.error('Mes no válido:', mesTexto);
           return null;
         }
         const anio = new Date().getFullYear().toString();
-        return `${anio}-${mes}-${dia}`; 
+        return `${anio}-${mes}-${dia}`;
       }
       return null;
     } catch (error) {
@@ -242,15 +326,15 @@ export class CitaPage implements OnInit {
         return null;
       }
 
-      let horas = parseInt(match[1], 10); 
-      const periodo = match[3].toLowerCase(); 
+      let horas = parseInt(match[1], 10);
+      const periodo = match[3].toLowerCase();
 
       if (periodo === 'tarde' || periodo === 'noche') {
         if (horas < 12) {
-          horas += 12; 
+          horas += 12;
         }
       } else if (periodo === 'mañana' && horas === 12) {
-        horas = 0; 
+        horas = 0;
       }
 
       return `${horas.toString().padStart(2, '0')}:00`;
@@ -258,5 +342,41 @@ export class CitaPage implements OnInit {
       console.error('Error al formatear la hora:', error);
       return null;
     }
+  }
+  formatearFechaParaMostrar(fechaString: string): string {
+    const fecha = new Date(fechaString);
+    const opciones: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return fecha.toLocaleDateString('es-ES', opciones);
+  }
+  
+  async cancelarCita(citaId: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Estás seguro que deseas cancelar esta cita?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            try {
+              await this.citaService.cancelarCita(citaId).toPromise();
+              this.mostrarAlerta('Cita cancelada correctamente');
+              this.reconocimientoVoz.hablar('Has cancelado la cita');
+              this.cargarCitas(); // Recargar la lista
+            } catch (error) {
+              this.mostrarAlerta('Error al cancelar la cita');
+            }
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

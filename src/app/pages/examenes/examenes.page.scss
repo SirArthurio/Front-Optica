@@ -1,0 +1,54 @@
+/* Animaciones adicionales que complementan Tailwind */
+@keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  ion-icon {
+    font-size: 24px;
+  }
+  
+  /* Aseguramos que los botones tengan un buen aspecto en dispositivos táctiles */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* Mejora para dispositivos móviles */
+  @media (max-width: 640px) {
+    .container {
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+    }
+  }
+  
+  /* Animación de entrada para las tarjetas */
+  .grid > div {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+  
+  .grid > div:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  
+  .grid > div:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  

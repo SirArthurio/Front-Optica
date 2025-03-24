@@ -85,8 +85,6 @@ export class RefraccionPage implements OnInit {
     }
   }
   
-  openMenu() {
-    this.menu.open("menu2")
-  }
+
   ngOnInit() {}
 }
